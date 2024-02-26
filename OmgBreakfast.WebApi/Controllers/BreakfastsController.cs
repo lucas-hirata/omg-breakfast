@@ -1,14 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ErrorOr;
 
-using OmgBreakfast.Contracts.Breakfast;
+using Microsoft.AspNetCore.Mvc;
+
+using OmgBreakfast.ApiContracts.Breakfast;
+using OmgBreakfast.BLL.Services.Breakfasts;
+using OmgBreakfast.Data.Models;
+using OmgBreakfast.WebApi.Mapping;
 
 namespace OmgBreakfast.WebApi.Controllers;
 
-[ApiController]
-[Route("[controller]")]
 [Produces("application/json")]
-public class BreakfastsController : ControllerBase
+public class BreakfastsController(
+    IBreakfastService breakfastService
+    ) : ApiController
 {
+    private readonly IBreakfastService _breakfastService = breakfastService;
+
     /// <summary>
     /// Creates a breakfast.
     /// </summary>
@@ -42,9 +49,28 @@ public class BreakfastsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult CreateBreakfast([FromBody] CreateBreakfastRequest request)
+    public async Task<IActionResult> CreateBreakfast([FromBody] CreateBreakfastRequest request)
     {
-        return Ok(request);
+        var breakfast = request.MapToBreakfast();
+
+        var result = await _breakfastService.CreateBreakfastAsync(breakfast);
+
+        if (result.IsError)
+        {
+            return Problem(result.Errors);
+        }
+
+        var response = breakfast.MapToBreakfastResponse();
+
+        return CreatedAtGetBreakfast(breakfast.Id, response);
+    }
+
+    private IActionResult CreatedAtGetBreakfast(Guid id, BreakfastResponse response)
+    {
+        return CreatedAtAction(
+            actionName: nameof(GetBreakfast),
+            routeValues: new { id = id },
+            value: response);
     }
 
     /// <summary>
@@ -59,9 +85,19 @@ public class BreakfastsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetBreakfasts(Guid id)
+    public async Task<IActionResult> GetBreakfast(Guid id)
     {
-        return Ok(id);
+        ErrorOr<Breakfast> result = await _breakfastService.GetBreakfastAsync(id);
+
+        if (result.IsError)
+        {
+            return Problem(result.Errors);
+        }
+
+        var breakfast = result.Value;
+        BreakfastResponse response = breakfast.MapToBreakfastResponse();
+
+        return Ok(response);
     }
 
     /// <summary>
@@ -91,18 +127,33 @@ public class BreakfastsController : ControllerBase
     ///     }
     ///
     /// </remarks>
-    /// <response code="200">Returns the upserted breakfast</response>
     /// <response code="201">Returns the newly upserted breakfast</response>
+    /// <response code="204">If the breakfast was successfully updated</response>
     /// <response code="400">If the item is null</response>
     /// <response code="500">Unexpected error</response>
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult UpsertBreakfast(Guid id, [FromBody] UpsertBreakfastRequest request)
+    public async Task<IActionResult> UpsertBreakfast(Guid id, [FromBody] UpsertBreakfastRequest request)
     {
-        return Ok(request);
+        var breakfast = request.MapToBreakfast();
+
+        var result = await _breakfastService.UpsertBreakfastAsync(breakfast);
+
+        if (result.IsError)
+        {
+            return Problem(result.Errors);
+        }
+
+        if (result.Value.IsNewlyCreated)
+        {
+            var response = breakfast.MapToBreakfastResponse();
+            return CreatedAtGetBreakfast(breakfast.Id, response);
+        }
+
+        return NoContent();
     }
 
     /// <summary>
@@ -116,8 +167,15 @@ public class BreakfastsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult DeleteBreakfast(Guid id)
+    public async Task<IActionResult> DeleteBreakfast(Guid id)
     {
-        return Ok(id);
+        var result = await _breakfastService.DeleteBreakfastAsync(id);
+
+        if (result.IsError)
+        {
+            return Problem(result.Errors);
+        }
+
+        return NoContent();
     }
 }

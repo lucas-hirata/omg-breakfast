@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmgBreakfast.Contracts", "OmgBreakfast.Contracts\OmgBreakfast.Contracts.csproj", "{307D316C-0B12-4764-BC6E-F33ADA2EA4A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmgBreakfast.ApiContracts", "OmgBreakfast.Contracts\OmgBreakfast.ApiContracts.csproj", "{307D316C-0B12-4764-BC6E-F33ADA2EA4A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmgBreakfast.WebApi", "OmgBreakfast.WebApi\OmgBreakfast.WebApi.csproj", "{B68E96E7-36E6-4E3A-89C8-6B24BACA7C03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmgBreakfast.BLL", "OmgBreakfast.BLL\OmgBreakfast.BLL.csproj", "{3680D680-5BA0-48CD-AB10-80323AE74DFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmgBreakfast.DAL", "OmgBreakfast.DAL\OmgBreakfast.DAL.csproj", "{258720AC-53CD-4B9F-9FE9-01748BD9E528}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmgBreakfast.Data", "OmgBreakfast.Data\OmgBreakfast.Data.csproj", "{9258AFD8-6400-4897-92A1-5592E90C3E80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{B68E96E7-36E6-4E3A-89C8-6B24BACA7C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B68E96E7-36E6-4E3A-89C8-6B24BACA7C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B68E96E7-36E6-4E3A-89C8-6B24BACA7C03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3680D680-5BA0-48CD-AB10-80323AE74DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3680D680-5BA0-48CD-AB10-80323AE74DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3680D680-5BA0-48CD-AB10-80323AE74DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3680D680-5BA0-48CD-AB10-80323AE74DFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{258720AC-53CD-4B9F-9FE9-01748BD9E528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{258720AC-53CD-4B9F-9FE9-01748BD9E528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{258720AC-53CD-4B9F-9FE9-01748BD9E528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{258720AC-53CD-4B9F-9FE9-01748BD9E528}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9258AFD8-6400-4897-92A1-5592E90C3E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9258AFD8-6400-4897-92A1-5592E90C3E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9258AFD8-6400-4897-92A1-5592E90C3E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9258AFD8-6400-4897-92A1-5592E90C3E80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

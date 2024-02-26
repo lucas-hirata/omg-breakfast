@@ -1,4 +1,4 @@
-﻿namespace OmgBreakfast.Contracts.Breakfast;
+﻿namespace OmgBreakfast.ApiContracts.Breakfast;
 
 public record BreakfastResponse(
     Guid Id,
